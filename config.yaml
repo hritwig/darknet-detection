@@ -1,0 +1,57 @@
+# Configuration for CIC-Darknet Edge Classifier
+project:
+  name: "darknet-edge-classifier"
+  version: "1.0.0"
+  seed: 42
+
+data:
+  input_path: "data/cic_darknet_2020_filtered.csv"
+  target_column: "target_label"
+  test_size: 0.2
+  selected_features:
+    - "Flow IAT Max"
+    - "Flow IAT Mean"
+    - "Fwd Packet Length Std"
+    - "Bwd Packet Length Max"
+    - "Flow Duration"
+    - "Packet Length Variance"
+
+preprocessing:
+  handle_inf: true
+  drop_na: true
+  apply_smote: true
+  smote_strategy: "auto"  # Can be 'minority', 'not majority', or dict
+  scale_features: true
+
+model:
+  type: "xgboost"
+  hyperparameters:
+    max_depth: 7
+    learning_rate: 0.05
+    n_estimators: 300
+    subsample: 0.9
+    colsample_bytree: 0.8
+    tree_method: "hist"
+    n_jobs: 1  # Edge device constraint
+    objective: "multi:softprob"
+    eval_metric: "mlogloss"
+  
+  optimization:
+    enable_hyperparameter_search: false
+    search_method: "randomized"  # or "grid"
+    cv_folds: 5
+    n_iter: 50
+
+edge_deployment:
+  compress_model: true
+  quantize: true
+  max_model_size_mb: 10
+  target_device: "nano_banana"
+  inference_framework: "onnx"  # or "tflite"
+
+output:
+  model_dir: "models"
+  log_dir: "logs"
+  save_metrics: true
+  save_confusion_matrix: true
+  save_feature_importance: true
