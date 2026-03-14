@@ -1,0 +1,13 @@
+# Data Manipulation & Array Processing
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Machine Learning & Preprocessing
+scikit-learn>=1.2.2
+imbalanced-learn>=0.10.1
+
+# Core Gradient Boosting Engine
+xgboost>=1.7.5
+
+# Edge UI & Visualization Dashboard
+streamlit>=1.24.0
